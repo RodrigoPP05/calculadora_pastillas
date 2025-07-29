@@ -2,8 +2,9 @@ services:
   - type: web
     name: calculadora-pastillas
     env: python
-    region: oregon
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
     plan: free
+    region: oregon
+    branch: main
     rootDir: proyecto1
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
