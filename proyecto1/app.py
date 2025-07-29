@@ -72,4 +72,5 @@ def index():
     return render_template("index.html", resultado=resultado, plot_data=json.dumps(plot_data))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=10000)
+
