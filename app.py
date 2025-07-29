@@ -43,7 +43,7 @@ def index():
             "costo": round(costo_unitario, 2)
         }
 
-        # Gráfica
+        # Datos para gráficas
         lados = np.arange(0.1, 2.05, 0.1).round(2).tolist()
         rendimientos = []
         costos = []
@@ -64,6 +64,3 @@ def index():
         }
 
     return render_template("index.html", resultado=resultado, plot_data=json.dumps(plot_data))
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=10000)
