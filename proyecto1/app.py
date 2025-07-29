@@ -3,13 +3,7 @@ import math
 import numpy as np
 import json
 
-from flask import Flask, render_template
-
 app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 def convertir(valor, unidad):
     if unidad == "cm": return valor
@@ -49,7 +43,7 @@ def index():
             "costo": round(costo_unitario, 2)
         }
 
-        # Generar datos para gráficas
+        # Gráfica
         lados = np.arange(0.1, 2.05, 0.1).round(2).tolist()
         rendimientos = []
         costos = []
@@ -73,4 +67,3 @@ def index():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
-
