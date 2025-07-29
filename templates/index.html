@@ -94,8 +94,12 @@
               line: { color: 'deepskyblue' }
             }
           ], {
-            title: 'Rendimiento y Costo vs Lado',
-            margin: { l: 60, r: 80, t: 60, b: 60 },
+            title: {
+              text: 'Rendimiento y Costo vs Lado',
+              font: { size: 20 },
+              y: 0.92  // Baja el título (1 es el top total)
+            },
+            margin: { l: 60, r: 80, t: 80, b: 60 },  // más espacio arriba para el título
             xaxis: {
               title: 'Lado de pastilla (cm)',
               tickmode: 'linear',
@@ -118,10 +122,16 @@
               tickfont: { color: 'deepskyblue' },
               titlefont: { color: 'deepskyblue' }
             },
-            legend: { x: 0.1, y: 1.15, orientation: 'h' }
+            legend: {
+              x: 0.5,
+              y: -0.2,  // Coloca la leyenda abajo del gráfico
+              xanchor: 'center',
+              orientation: 'h'
+            }
           });
         </script>
-      </div>
+  
+        </div>
     {% endif %}
 
     <!-- Historial (siempre visible) -->
