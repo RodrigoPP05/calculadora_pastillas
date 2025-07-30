@@ -33,19 +33,17 @@ def index():
         d_cm = convertir(d, ud)
         l_cm = convertir(l, ul)
 
-        # Cálculo de áreas y cantidades
-        total = (math.pi*(d_cm/2)**2 / dens) - (math.pi * d_cm / (2*dens).sqrt(2) # Total de pastillas teóricas
+        area_chip = l_cm ** 2
+        area_wafer = math.pi * (d_cm / 2) ** 2
 
-        # Cálculo del rendimiento usando la fórmula con densidad de defectos
-        rendimiento = rendimineto_oblea * (1 + (dens * area_chip / 4)) ** -4
+        total = (area_wafer / area_chip) - (math.pi * d_cm / math.sqrt(2 * dens))
+        rendimiento = rendimiento_oblea * (1 + (dens * area_chip / 4)) ** -4
+        buenas = total * rendimiento
+        costo_unitario = costo / buenas
 
-        buenas = total * rendimiento                   # Pastillas buenas
-        costo_unitario = costo / buenas                # Costo por pastilla buena
 
         # Guarda los resultados para mostrarlos en HTML
         resultado = {
-            "wafer": round(area_wafer, 2),
-            "chip": round(area_chip, 2),
             "total": int(total),
             "rendimiento": round(rendimiento * 100, 2),
             "buenas": int(buenas),
