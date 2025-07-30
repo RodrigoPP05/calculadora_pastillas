@@ -39,7 +39,7 @@ def index():
 
         area_wafer = math.pi * (d_cm / 2) ** 2
         area_chip = l_cm ** 2
-        total = (math.pi * d_cm**2) / area_chip - (math.pi * d_cm) / math.sqrt(2 * area_chip)
+        total = ((math.pi * (d_cm/2)**2) / area_chip) - (math.pi * d_cm) / math.sqrt(2 * area_chip)
 
         rendimiento = rendimiento_oblea * (1 + (dens * area_chip / 4)) ** -4
         buenas = total * rendimiento
