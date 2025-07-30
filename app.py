@@ -1,35 +1,39 @@
-from flask import Flask, render_template, request  # Importa Flask y funciones para renderizar HTML y manejar formularios
-import math        # Biblioteca matemática para usar pi y potencias
-import numpy as np # Biblioteca para trabajar con arreglos numéricos
-import json        # Para enviar datos como JSON a la plantilla
+from flask import Flask, render_template, request
+import math
+import numpy as np
+import json
 
-app = Flask(__name__)  # Crea la instancia de la aplicación Flask
+app = Flask(__name__)
 
-# Función para convertir unidades a centímetros
 def convertir(valor, unidad):
     if unidad == "cm": return valor
     if unidad == "pulgadas": return valor * 2.54
     if unidad == "m": return valor * 100
     if unidad == "pies": return valor * 30.48
-    return valor  # Si no coincide con ninguna, lo deja igual
+    return valor
 
-# Ruta principal de la aplicación, acepta GET y POST
 @app.route("/", methods=["GET", "POST"])
 def index():
-    resultado = {}  # Diccionario vacío para guardar resultados
-    plot_data = {}  # Diccionario vacío para datos de la gráfica
+    resultado = {}
+    plot_data = {}
 
-    if request.method == "POST":  # Si el usuario envió el formulario...
-        # Obtiene los datos enviados desde el formulario HTML
+    if request.method == "POST":
         d = float(request.form["diametro"])
         l = float(request.form["lado"])
         dens = float(request.form["densidad"])
         costo = float(request.form["costo"])
-        rendimineto_oblea = float(request.form["Rendimiento Por Oblea"]) #rendimineto por oblea
         ud = request.form["udiam"]
         ul = request.form["ulado"]
 
-        # Convierte las unidades a centímetros
+        # Si el campo de rendimiento está vacío, se asume 100%
+        rendimiento_oblea_str = request.form.get("Rendimiento Por Oblea", "").strip()
+        if rendimiento_oblea_str == "":
+            rendimiento_oblea = 1.0
+        else:
+            rendimiento_oblea = float(rendimiento_oblea_str)
+            if rendimiento_oblea > 1:  # Si lo dan como 70%, lo convertimos a 0.70
+                rendimiento_oblea /= 100
+
         d_cm = convertir(d, ud)
         l_cm = convertir(l, ul)
 
@@ -41,8 +45,6 @@ def index():
         buenas = total * rendimiento
         costo_unitario = costo / buenas
 
-
-        # Guarda los resultados para mostrarlos en HTML
         resultado = {
             "wafer": round(area_wafer, 2),
             "chip": round(area_chip, 2),
@@ -52,31 +54,27 @@ def index():
             "costo": round(costo_unitario, 2)
         }
 
-        # ---- Sección de datos para la gráfica interactiva ----
-        lados = np.arange(0.1, 2.05, 0.1).round(2).tolist()  # Genera lados de pastilla de 0.1 a 2.0 cm
+        lados = np.arange(0.1, 2.05, 0.1).round(2).tolist()
         rendimientos = []
         costos = []
 
         for lado_val in lados:
             area = lado_val ** 2
             total_p = (math.pi * d_cm**2) / area - (math.pi * d_cm) / math.sqrt(2 * area)
-            rendimiento_est = rendimineto_oblea * (1 + (dens * area / 4)) ** -4
+            rendimiento_est = rendimiento_oblea * (1 + (dens * area / 4)) ** -4
             buenas = total_p * rendimiento_est
             costo_p = costo / buenas
-            rendimientos.append(round(yield_val * 100, 2))  # Guarda rendimiento en %
-            costos.append(round(costo_p, 2))                # Guarda costo por pastilla
+            rendimientos.append(round(rendimiento_est * 100, 2))
+            costos.append(round(costo_p, 2))
 
-        # Empaqueta datos de la gráfica para enviarlos al template
         plot_data = {
             "lados": lados,
             "rendimientos": rendimientos,
             "costos": costos
         }
 
-    # Renderiza la plantilla HTML con los resultados y la gráfica
     return render_template("index.html", resultado=resultado, plot_data=json.dumps(plot_data))
 
-# Permite correr el servidor en entorno local o Render (puerto 10000)
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
