@@ -45,6 +45,11 @@
         <input name="costo" required>
       </div>
 
+      <div class="campo">
+        <label>Rendimiento por oblea (0 - 1):</label>
+        <input name="Rendimiento Por Oblea" required>
+      </div>
+
       <button type="submit">Calcular</button>
     </form>
 
@@ -97,9 +102,9 @@
             title: {
               text: 'Rendimiento y Costo vs Lado',
               font: { size: 20 },
-              y: 0.92  // Baja el título (1 es el top total)
+              y: 0.92
             },
-            margin: { l: 60, r: 80, t: 80, b: 60 },  // más espacio arriba para el título
+            margin: { l: 60, r: 80, t: 80, b: 60 },
             xaxis: {
               title: 'Lado de pastilla (cm)',
               tickmode: 'linear',
@@ -124,17 +129,16 @@
             },
             legend: {
               x: 0.5,
-              y: -0.2,  // Coloca la leyenda abajo del gráfico
+              y: -0.2,
               xanchor: 'center',
               orientation: 'h'
             }
           });
         </script>
-  
-        </div>
+      </div>
     {% endif %}
 
-    <!-- Historial (siempre visible) -->
+    <!-- Historial -->
     <div id="historial" class="tab-content {% if not resultado %}active{% endif %}">
       <h2>📚 Historial de cálculos (sesión)</h2>
       <table id="tabla-historial">
