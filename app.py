@@ -33,10 +33,10 @@ def index():
         d_cm = convertir(d, ud)
         l_cm = convertir(l, ul)
 
-        area_chip = l_cm ** 2
         area_wafer = math.pi * (d_cm / 2) ** 2
+        area_chip = l_cm ** 2
+        total = (math.pi * d_cm**2) / area_chip - (math.pi * d_cm) / math.sqrt(2 * area_chip)
 
-        total = (area_wafer / area_chip) - (math.pi * d_cm / math.sqrt(2 * dens))
         rendimiento = rendimiento_oblea * (1 + (dens * area_chip / 4)) ** -4
         buenas = total * rendimiento
         costo_unitario = costo / buenas
@@ -44,6 +44,8 @@ def index():
 
         # Guarda los resultados para mostrarlos en HTML
         resultado = {
+            "wafer": round(area_wafer, 2),
+            "chip": round(area_chip, 2),
             "total": int(total),
             "rendimiento": round(rendimiento * 100, 2),
             "buenas": int(buenas),
@@ -57,9 +59,9 @@ def index():
 
         for lado_val in lados:
             area = lado_val ** 2
-            total_p = area_wafer / area
-            yield_val = (1 + (dens * area / 4)) ** -4
-            buenas = total_p * yield_val
+            total_p = (math.pi * d_cm**2) / area - (math.pi * d_cm) / math.sqrt(2 * area)
+            rendimiento_est = rendimineto_oblea * (1 + (dens * area / 4)) ** -4
+            buenas = total_p * rendimiento_est
             costo_p = costo / buenas
             rendimientos.append(round(yield_val * 100, 2))  # Guarda rendimiento en %
             costos.append(round(costo_p, 2))                # Guarda costo por pastilla
