@@ -96,7 +96,8 @@ button:hover {
 .tab-btn {
   background: #444;
   border: none;
-  padding: 10px 20px;
+  width: min-content; 
+  padding: 6px 10px;
   border-radius: 10px 10px 0 0;
   color: white;
   cursor: pointer;
