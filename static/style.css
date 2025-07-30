@@ -96,14 +96,24 @@ button:hover {
 .tab-btn {
   background: #444;
   border: none;
-  width: min-content; 
-  padding: 6px 10px;
-  border-radius: 10px;
+  width: auto;                  /* Se ajusta al contenido */
+  padding: 4px 8px;             /* Botón más compacto */
+  margin: 0 4px;
+  border-radius: 8px 8px 0 0;
   color: white;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 13px;              /* Texto más pequeño */
   transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
+
+.tab-btn.active {
+  background: #2dd4bf;
+}
+
 
 .tab-btn:hover {
   background: #666;
