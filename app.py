@@ -1,39 +1,48 @@
-from flask import Flask, render_template, request
-import math
-import numpy as np
-import json
+from flask import Flask, render_template, request  # Importa Flask y funciones para renderizar HTML y manejar formularios
+import math        # Biblioteca matemática para usar pi y potencias
+import numpy as np # Biblioteca para trabajar con arreglos numéricos
+import json        # Para enviar datos como JSON a la plantilla
 
-app = Flask(__name__)
+app = Flask(__name__)  # Crea la instancia de la aplicación Flask
 
+# Función para convertir unidades a centímetros
 def convertir(valor, unidad):
     if unidad == "cm": return valor
     if unidad == "pulgadas": return valor * 2.54
     if unidad == "m": return valor * 100
     if unidad == "pies": return valor * 30.48
-    return valor
+    return valor  # Si no coincide con ninguna, lo deja igual
 
+# Ruta principal de la aplicación, acepta GET y POST
 @app.route("/", methods=["GET", "POST"])
 def index():
-    resultado = {}
-    plot_data = {}
-    if request.method == "POST":
+    resultado = {}  # Diccionario vacío para guardar resultados
+    plot_data = {}  # Diccionario vacío para datos de la gráfica
+
+    if request.method == "POST":  # Si el usuario envió el formulario...
+        # Obtiene los datos enviados desde el formulario HTML
         d = float(request.form["diametro"])
         l = float(request.form["lado"])
         dens = float(request.form["densidad"])
         costo = float(request.form["costo"])
+        rendimineto_oblea = float(request.form["Rendimiento Por Oblea"]) #rendimineto por oblea
         ud = request.form["udiam"]
         ul = request.form["ulado"]
 
+        # Convierte las unidades a centímetros
         d_cm = convertir(d, ud)
         l_cm = convertir(l, ul)
 
-        area_wafer = math.pi * (d_cm / 2) ** 2
-        area_chip = l_cm ** 2
-        total = area_wafer / area_chip
-        rendimiento = (1 + (dens * area_chip / 4)) ** -4
-        buenas = total * rendimiento
-        costo_unitario = costo / buenas
+        # Cálculo de áreas y cantidades
+        total = (math.pi*(d_cm/2)**2 / dens) - (math.pi * d_cm / (2*dens).sqrt(2) # Total de pastillas teóricas
 
+        # Cálculo del rendimiento usando la fórmula con densidad de defectos
+        rendimiento = rendimineto_oblea * (1 + (dens * area_chip / 4)) ** -4
+
+        buenas = total * rendimiento                   # Pastillas buenas
+        costo_unitario = costo / buenas                # Costo por pastilla buena
+
+        # Guarda los resultados para mostrarlos en HTML
         resultado = {
             "wafer": round(area_wafer, 2),
             "chip": round(area_chip, 2),
@@ -43,8 +52,8 @@ def index():
             "costo": round(costo_unitario, 2)
         }
 
-        # Gráfica
-        lados = np.arange(0.1, 2.05, 0.1).round(2).tolist()
+        # ---- Sección de datos para la gráfica interactiva ----
+        lados = np.arange(0.1, 2.05, 0.1).round(2).tolist()  # Genera lados de pastilla de 0.1 a 2.0 cm
         rendimientos = []
         costos = []
 
@@ -54,17 +63,20 @@ def index():
             yield_val = (1 + (dens * area / 4)) ** -4
             buenas = total_p * yield_val
             costo_p = costo / buenas
-            rendimientos.append(round(yield_val * 100, 2))
-            costos.append(round(costo_p, 2))
+            rendimientos.append(round(yield_val * 100, 2))  # Guarda rendimiento en %
+            costos.append(round(costo_p, 2))                # Guarda costo por pastilla
 
+        # Empaqueta datos de la gráfica para enviarlos al template
         plot_data = {
             "lados": lados,
             "rendimientos": rendimientos,
             "costos": costos
         }
 
+    # Renderiza la plantilla HTML con los resultados y la gráfica
     return render_template("index.html", resultado=resultado, plot_data=json.dumps(plot_data))
 
+# Permite correr el servidor en entorno local o Render (puerto 10000)
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
