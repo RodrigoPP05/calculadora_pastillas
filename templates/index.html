@@ -46,9 +46,11 @@
       </div>
 
       <div class="campo">
-        <label>Rendimiento por oblea (0 - 1):</label>
-        <input name="Rendimiento Por Oblea" required>
+        <label>Rendimiento por Oblea (%):</label>
+        <input name="Rendimiento Por Oblea" type="number" placeholder="100" min="0" max="100">
+        <small style="color: gray;">(Si se deja en blanco, se asumirá como 100%)</small>
       </div>
+
 
       <button type="submit">Calcular</button>
     </form>
