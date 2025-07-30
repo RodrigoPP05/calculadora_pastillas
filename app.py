@@ -60,7 +60,7 @@ def index():
 
         for lado_val in lados:
             area = lado_val ** 2
-            total_p = (math.pi * d_cm**2) / area - (math.pi * d_cm) / math.sqrt(2 * area)
+            total_p = ((math.pi * (d_cm/2)**2) / area) - ((math.pi * d_cm) / math.sqrt(2 * area))
             rendimiento_est = rendimiento_oblea * (1 + (dens * area / 4)) ** -4
             buenas = total_p * rendimiento_est
             costo_p = costo / buenas
