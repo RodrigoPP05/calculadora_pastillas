@@ -95,9 +95,6 @@
       <!-- Botón de envío del formulario -->
       <button type="submit">Calcular</button>
     </form>
-
-    <!-- MOSTRAR RESULTADOS SI EXISTEN -->
-    {% if resultado %}
       <!-- Botones de navegación entre pestañas -->
       <div class="tabs">
         <button class="tab-btn active" onclick="openTab(event, 'resultados')">📋 Resultados</button>
@@ -105,6 +102,9 @@
         <button class="tab-btn" onclick="openTab(event, 'historial')">📚 Historial</button>
         <button class="tab-btn" onclick="openTab(event, 'ejercicio')">🧠 Modo Ejercicio</button>
       </div>
+    
+    <!-- MOSTRAR RESULTADOS SI EXISTEN -->
+    {% if resultado %}
 
       <!-- Pestaña de resultados numéricos -->
       <div id="resultados" class="tab-content active">
