@@ -37,11 +37,11 @@ def index():
         buenas = total * rendimiento
         costo_unitario = costo / buenas
 
-        # Nuevos parámetros opcionales para costo IC
-        usar_costos_extra = request.form.get("usar_costos_extra") == "si"
+        # ✔ Corregido: uso de checkbox y nombres correctos
+        usar_costos_extra = request.form.get("usar_extra") == "on"
         costo_prueba = float(request.form.get("costo_prueba", 0))
         costo_empaque = float(request.form.get("costo_empaque", 0))
-        rendimiento_final = float(request.form.get("rendimiento_final", 100)) / 100
+        rendimiento_final = float(request.form.get("rend_final", 100)) / 100
 
         costo_die = costo_unitario
         costo_ic = None
@@ -67,7 +67,7 @@ def index():
 
         for lado_val in lados:
             area = lado_val ** 2
-            total_p = ((math.pi * (d_cm/2)**2) / area_chip) - (math.pi * d_cm) / math.sqrt(2 * area_chip)
+            total_p = ((math.pi * (d_cm/2)**2) / area) - (math.pi * d_cm) / math.sqrt(2 * area)
             rendimiento_est = rendimiento_oblea * (1 + (dens * area / 4)) ** -4
             buenas = total_p * rendimiento_est
             costo_p = costo / buenas
