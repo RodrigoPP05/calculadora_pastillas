@@ -101,12 +101,16 @@
       {% endif %}
     </div>
 
-    <!-- Pestaña Gráfica -->
+        <!-- Pestaña Gráfica -->
     <div id="grafica" class="tab-content">
       {% if resultado %}
         <div id="plotly-graph"></div>
         <script>
           const data = {{ plot_data | safe }};
+          const lado_actual = {{ request.form['lado'] | float }};
+          const rendimiento_actual = {{ resultado.rendimiento }};
+          const costo_actual = {{ resultado.costo }};
+    
           Plotly.newPlot('plotly-graph', [
             {
               x: data.lados,
@@ -125,6 +129,30 @@
               mode: 'lines+markers',
               marker: { color: 'deepskyblue' },
               line: { color: 'deepskyblue' }
+            },
+            {
+              x: [lado_actual],
+              y: [rendimiento_actual],
+              name: '📍 Rendimiento actual',
+              yaxis: 'y',
+              mode: 'markers',
+              marker: {
+                color: 'green',
+                size: 12,
+                symbol: 'star'
+              }
+            },
+            {
+              x: [lado_actual],
+              y: [costo_actual],
+              name: '📍 Costo actual',
+              yaxis: 'y2',
+              mode: 'markers',
+              marker: {
+                color: 'red',
+                size: 12,
+                symbol: 'diamond'
+              }
             }
           ], {
             title: 'Rendimiento y Costo vs Lado',
