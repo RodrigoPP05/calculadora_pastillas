@@ -28,31 +28,32 @@ Una aplicación web interactiva desarrollada con **Flask**, **HTML/CSS**, **Java
 
 ---
 
-## 🧮 Fórmulas Implementadas
+## 🎯 Fórmulas Implementadas
 
 **Número de pastillas por oblea:**
 
-\[
+\\[
 \text{Pastillas} = \frac{\pi \cdot (D/2)^2}{L^2} - \frac{\pi \cdot D}{\sqrt{2 \cdot L^2}}
-\]
+\\]
 
 **Rendimiento con defectos:**
 
-\[
+\\[
 Y = Y_0 \cdot \left(1 + \frac{D \cdot A}{4}\right)^{-4}
-\]
+\\]
 
 **Costo por pastilla buena:**
 
-\[
+\\[
 C = \frac{\text{Costo oblea}}{\text{Pastillas buenas}}
-\]
+\\]
 
 **Costo del circuito integrado (IC):**
 
-\[
+\\[
 C_{\text{IC}} = \frac{C_{\text{die}} + C_{\text{prueba}} + C_{\text{empaque}}}{\text{Rend. final}}
-\]
+\\]
+
 
 ---
 
