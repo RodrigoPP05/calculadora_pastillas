@@ -215,9 +215,23 @@
     }
 
     window.onload = function () {
-      mostrarCamposExtras();
-      mostrarHistorial();
-    };
+    mostrarCamposExtras();
+    mostrarHistorial();
+  
+    // Guardar resultado actual si existe
+    {% if resultado %}
+      const historial = JSON.parse(sessionStorage.getItem('historial')) || [];
+      historial.push({
+        d: "{{ request.form['diametro'] }} {{ request.form['udiam'] }}",
+        l: "{{ request.form['lado'] }} {{ request.form['ulado'] }}",
+        dens: "{{ request.form['densidad'] }}",
+        rend: "{{ resultado.rendimiento }}",
+        cost: "{{ resultado.costo }}"
+      });
+      sessionStorage.setItem('historial', JSON.stringify(historial));
+    {% endif %}
+  };
+
   </script>
 </body>
 </html>
