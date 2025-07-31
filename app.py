@@ -31,7 +31,7 @@ def index():
 
         area_wafer = math.pi * (d_cm / 2) ** 2
         area_chip = l_cm ** 2
-        total = (math.pi * d_cm**2) / area_chip - (math.pi * d_cm) / math.sqrt(2 * area_chip)
+        total = ((math.pi * (d_cm/2)**2) / area_chip) - (math.pi * d_cm) / math.sqrt(2 * area_chip)
 
         rendimiento = rendimiento_oblea * (1 + (dens * area_chip / 4)) ** -4
         buenas = total * rendimiento
@@ -67,7 +67,7 @@ def index():
 
         for lado_val in lados:
             area = lado_val ** 2
-            total_p = (math.pi * d_cm**2) / area - (math.pi * d_cm) / math.sqrt(2 * area)
+            total_p = ((math.pi * (d_cm/2)**2) / area_chip) - (math.pi * d_cm) / math.sqrt(2 * area_chip)
             rendimiento_est = rendimiento_oblea * (1 + (dens * area / 4)) ** -4
             buenas = total_p * rendimiento_est
             costo_p = costo / buenas
