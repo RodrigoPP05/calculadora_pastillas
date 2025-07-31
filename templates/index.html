@@ -1,223 +1,144 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora de Pastillas</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <link rel="manifest" href="/static/manifest.json">
-  <meta name="theme-color" content="#14d8dc">
-  <link rel="icon" href="/static/icon-192.png">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/static/service-worker.js')
-        .then(() => console.log("Service Worker registrado"));
-    }
-  </script>
+    <meta charset="UTF-8">
+    <title>Calculadora de Rendimiento de Pastillas</title>
+    <style>
+        body {
+            background-color: #1e1e2f;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0 4px;
+        }
+        input, select {
+            padding: 6px;
+            width: 200px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .checkbox-toggle {
+            margin-top: 10px;
+        }
+        .extra-fields {
+            display: none;
+        }
+        .extra-fields.visible {
+            display: block;
+        }
+        .submit-btn {
+            background-color: #2ce4c4;
+            color: black;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleExtraFields() {
+            const checkbox = document.getElementById("usar_costos_extra");
+            const extras = document.getElementById("extra_fields");
+            extras.classList.toggle("visible", checkbox.checked);
+        }
+    </script>
 </head>
 <body>
-  <div class="container">
     <h1>Calculadora de rendimiento de pastillas</h1>
-    <form method="POST" class="formulario">
-      <div class="campo">
-        <label>Diámetro de oblea:</label>
-        <input name="diametro" required>
-        <select name="udiam">
-          <option>cm</option><option>pulgadas</option><option>m</option><option>pies</option>
-        </select>
-      </div>
 
-      <div class="campo">
-        <label>Lado de pastilla:</label>
-        <input name="lado" required>
-        <select name="ulado">
-          <option>cm</option><option>pulgadas</option><option>m</option><option>pies</option>
-        </select>
-      </div>
+    <form method="POST">
+        <div class="form-group">
+            <label>Diámetro de oblea:</label>
+            <input type="number" step="any" name="diametro" required>
+            <select name="udiam">
+                <option value="cm">cm</option>
+                <option value="pulgadas">pulgadas</option>
+                <option value="m">m</option>
+                <option value="pies">pies</option>
+            </select>
+        </div>
 
-      <div class="campo">
-        <label>Densidad de defectos (/cm²):</label>
-        <input name="densidad" required>
-      </div>
+        <div class="form-group">
+            <label>Lado de pastilla:</label>
+            <input type="number" step="any" name="lado" required>
+            <select name="ulado">
+                <option value="cm">cm</option>
+                <option value="pulgadas">pulgadas</option>
+                <option value="m">m</option>
+                <option value="pies">pies</option>
+            </select>
+        </div>
 
-      <div class="campo">
-        <label>Costo de la oblea (USD):</label>
-        <input name="costo" required>
-      </div>
+        <div class="form-group">
+            <label>Densidad de defectos (/cm²):</label>
+            <input type="number" step="any" name="densidad" required>
+        </div>
 
-      <div class="campo">
-        <label>Rendimiento por Oblea (%):</label>
-        <input name="Rendimiento Por Oblea" type="number" placeholder="100" min="0" max="100">
-        <small style="color: gray;">(Si se deja en blanco, se asumirá como 100%)</small>
-      </div>
+        <div class="form-group">
+            <label>Costo de la oblea (USD):</label>
+            <input type="number" step="any" name="costo" required>
+        </div>
 
+        <div class="form-group">
+            <label>Rendimiento por Oblea (%):</label>
+            <input type="number" step="any" name="Rendimiento Por Oblea" placeholder="100">
+            <small>(Si se deja en blanco, se asumirá como 100%)</small>
+        </div>
 
-      <button type="submit">Calcular</button>
+        <div class="form-group checkbox-toggle">
+            <label>
+                <input type="checkbox" id="usar_costos_extra" name="usar_costos_extra" onchange="toggleExtraFields()">
+                Usar datos para calcular el costo del circuito integrado (IC)
+            </label>
+        </div>
+
+        <div id="extra_fields" class="extra-fields">
+            <div class="form-group">
+                <label>Costo de prueba por pastilla (USD):</label>
+                <input type="number" step="any" name="costo_prueba">
+            </div>
+
+            <div class="form-group">
+                <label>Costo de empaquetado y prueba final (USD):</label>
+                <input type="number" step="any" name="costo_empaque">
+            </div>
+
+            <div class="form-group">
+                <label>Rendimiento final de prueba (%):</label>
+                <input type="number" step="any" name="rendimiento_final">
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Calcular</button>
     </form>
 
     {% if resultado %}
-      <!-- Pestañas -->
-      <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'resultados')">📋 Resultados</button>
-        <button class="tab-btn" onclick="openTab(event, 'grafica')">📈 Gráfica</button>
-        <button class="tab-btn" onclick="openTab(event, 'historial')">📚 Historial</button>
-      </div>
-
-      <!-- Resultados -->
-      <div id="resultados" class="tab-content active">
-        <div class="resultado">
-          <h2>📋 Resultados del cálculo</h2>
-          <p>Área de la oblea: {{ resultado.wafer }} cm²</p>
-          <p>Área de la pastilla: {{ resultado.chip }} cm²</p>
-          <p>Total de pastillas: {{ resultado.total }}</p>
-          <p>Rendimiento: {{ resultado.rendimiento }} %</p>
-          <p>Pastillas buenas: {{ resultado.buenas }}</p>
-          <p>Costo por pastilla buena: ${{ resultado.costo }}</p>
-        </div>
-      </div>
-
-      <!-- Gráfica -->
-      <div id="grafica" class="tab-content">
-        <div id="plotly-graph"></div>
-        <script>
-          const data = {{ plot_data | safe }};
-          Plotly.newPlot('plotly-graph', [
-            {
-              x: data.lados,
-              y: data.rendimientos,
-              name: 'Rendimiento (%)',
-              yaxis: 'y',
-              mode: 'lines+markers',
-              marker: { color: 'lime' },
-              line: { color: 'lime' }
-            },
-            {
-              x: data.lados,
-              y: data.costos,
-              name: 'Costo por pastilla ($)',
-              yaxis: 'y2',
-              mode: 'lines+markers',
-              marker: { color: 'deepskyblue' },
-              line: { color: 'deepskyblue' }
-            }
-          ], {
-            title: {
-              text: 'Rendimiento y Costo vs Lado',
-              font: { size: 20 },
-              y: 0.92
-            },
-            margin: { l: 60, r: 80, t: 80, b: 60 },
-            xaxis: {
-              title: 'Lado de pastilla (cm)',
-              tickmode: 'linear',
-              tick0: 0.1,
-              dtick: 0.1,
-              range: [0, Math.max(...data.lados)]
-            },
-            yaxis: {
-              title: 'Rendimiento (%)',
-              side: 'right',
-              position: 0.95,
-              tickfont: { color: 'green' },
-              titlefont: { color: 'green' }
-            },
-            yaxis2: {
-              title: 'Costo ($)',
-              overlaying: 'y',
-              side: 'left',
-              showgrid: false,
-              tickfont: { color: 'deepskyblue' },
-              titlefont: { color: 'deepskyblue' }
-            },
-            legend: {
-              x: 0.5,
-              y: -0.2,
-              xanchor: 'center',
-              orientation: 'h'
-            }
-          });
-        </script>
-      </div>
+    <hr>
+    <h2>Resultados</h2>
+    <ul>
+        <li><b>Área de la oblea:</b> {{ resultado.wafer }} cm²</li>
+        <li><b>Área del chip:</b> {{ resultado.chip }} cm²</li>
+        <li><b>Pastillas por oblea:</b> {{ resultado.total }}</li>
+        <li><b>Rendimiento (%):</b> {{ resultado.rendimiento }}%</li>
+        <li><b>Pastillas buenas:</b> {{ resultado.buenas }}</li>
+        <li><b>Costo por pastilla:</b> ${{ resultado.costo }}</li>
+        {% if resultado.costo_ic %}
+        <li><b>Costo del circuito integrado (IC):</b> ${{ resultado.costo_ic }}</li>
+        {% endif %}
+    </ul>
     {% endif %}
-
-    <!-- Historial -->
-    <div id="historial" class="tab-content {% if not resultado %}active{% endif %}">
-      <h2>📚 Historial de cálculos (sesión)</h2>
-      <table id="tabla-historial">
-        <thead>
-          <tr>
-            <th>Diámetro</th>
-            <th>Lado</th>
-            <th>Defectos</th>
-            <th>Rendimiento (%)</th>
-            <th>Costo ($)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </div>
-
-  <script>
-    function openTab(evt, tabName) {
-      const tabcontents = document.getElementsByClassName("tab-content");
-      const tabbuttons = document.getElementsByClassName("tab-btn");
-
-      for (let i = 0; i < tabcontents.length; i++) {
-        tabcontents[i].style.display = "none";
-        tabcontents[i].classList.remove("active");
-      }
-
-      for (let i = 0; i < tabbuttons.length; i++) {
-        tabbuttons[i].classList.remove("active");
-      }
-
-      document.getElementById(tabName).style.display = "block";
-      document.getElementById(tabName).classList.add("active");
-      evt.currentTarget.classList.add("active");
-    }
-
-    function guardarEnHistorial(d, l, dens, rend, cost) {
-      const nuevo = { d, l, dens, rend, cost };
-      const historial = JSON.parse(sessionStorage.getItem('historial')) || [];
-      historial.push(nuevo);
-      sessionStorage.setItem('historial', JSON.stringify(historial));
-      mostrarHistorial();
-    }
-
-    function mostrarHistorial() {
-      const historial = JSON.parse(sessionStorage.getItem('historial')) || [];
-      const tbody = document.querySelector("#tabla-historial tbody");
-      tbody.innerHTML = "";
-      historial.forEach(item => {
-        const fila = `<tr>
-          <td>${item.d}</td>
-          <td>${item.l}</td>
-          <td>${item.dens}</td>
-          <td>${item.rend}</td>
-          <td>${item.cost}</td>
-        </tr>`;
-        tbody.innerHTML += fila;
-      });
-    }
-
-    window.onload = function () {
-      const activeTab = document.querySelector('.tab-content.active');
-      if (activeTab) activeTab.style.display = "block";
-      mostrarHistorial();
-    };
-  </script>
-
-  {% if resultado %}
-  <script>
-    guardarEnHistorial(
-      "{{ request.form['diametro'] }}",
-      "{{ request.form['lado'] }}",
-      "{{ request.form['densidad'] }}",
-      "{{ resultado.rendimiento }}",
-      "{{ resultado.costo }}"
-    );
-  </script>
-  {% endif %}
 </body>
 </html>
