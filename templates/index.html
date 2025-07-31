@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Codificación de caracteres y título -->
   <meta charset="UTF-8">
   <title>Calculadora de Pastillas</title>
+
+  <!-- Enlace a la hoja de estilos -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <!-- Librería Plotly para gráficas interactivas -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <link rel="manifest" href="/static/manifest.json">
+
+  <!-- Color del navegador en móviles -->
   <meta name="theme-color" content="#14d8dc">
+
+  <!-- Ícono del sitio -->
   <link rel="icon" href="/static/icon-192.png">
+
+  <!-- Registro del service worker para modo offline -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/static/service-worker.js')
@@ -15,10 +25,15 @@
     }
   </script>
 </head>
+
 <body>
   <div class="container">
     <h1>Calculadora de rendimiento de pastillas</h1>
+
+    <!-- FORMULARIO PRINCIPAL -->
     <form method="POST" class="formulario">
+
+      <!-- Diámetro de la oblea con selector de unidad -->
       <div class="campo">
         <label>Diámetro de oblea:</label>
         <input name="diametro" required>
@@ -27,6 +42,7 @@
         </select>
       </div>
 
+      <!-- Lado de la pastilla con selector de unidad -->
       <div class="campo">
         <label>Lado de pastilla:</label>
         <input name="lado" required>
@@ -35,73 +51,76 @@
         </select>
       </div>
 
+      <!-- Densidad de defectos por centímetro cuadrado -->
       <div class="campo">
         <label>Densidad de defectos (/cm²):</label>
         <input name="densidad" required>
       </div>
 
+      <!-- Costo de la oblea -->
       <div class="campo">
         <label>Costo de la oblea (USD):</label>
         <input name="costo" required>
       </div>
 
+      <!-- Rendimiento de la oblea, opcional -->
       <div class="campo">
         <label>Rendimiento por Oblea (%):</label>
         <input name="Rendimiento Por Oblea" type="number" placeholder="100" min="0" max="100">
-        <small style="color: gray;">(Si se deja en blanco, se asumirá como 100%)</small>
       </div>
 
+      <!-- Opción para activar el cálculo del circuito integrado -->
       <div class="campo">
-  <label>
-    <input type="checkbox" id="usar_extra" name="usar_extra" onchange="mostrarCamposExtras()"> Calcular con datos del circuito integrado (opcional)
-  </label>
-</div>
+        <label>
+          <input type="checkbox" id="usar_extra" name="usar_extra" onchange="mostrarCamposExtras()"> Calcular con datos del circuito integrado (opcional)
+        </label>
+      </div>
 
-<div id="extra_fields" style="display: none;">
-  <div class="campo">
-    <label>Costo de prueba por pastilla (USD):</label>
-    <input name="costo_prueba" type="number" step="0.01" min="0">
-  </div>
+      <!-- CAMPOS ADICIONALES PARA CIRCUITO INTEGRADO -->
+      <div id="extra_fields" style="display: none;">
+        <div class="campo">
+          <label>Costo de prueba por pastilla (USD):</label>
+          <input name="costo_prueba" type="number" step="0.01" min="0">
+        </div>
+        <div class="campo">
+          <label>Costo de empaquetado por pastilla (USD):</label>
+          <input name="costo_empaque" type="number" step="0.01" min="0">
+        </div>
+        <div class="campo">
+          <label>Rendimiento de prueba final (%):</label>
+          <input name="rend_final" type="number" placeholder="100" min="0" max="100">
+        </div>
+      </div>
 
-  <div class="campo">
-    <label>Costo de empaquetado por pastilla (USD):</label>
-    <input name="costo_empaque" type="number" step="0.01" min="0">
-  </div>
-
-  <div class="campo">
-    <label>Rendimiento de prueba final (%):</label>
-    <input name="rend_final" type="number" placeholder="100" min="0" max="100">
-    <small style="color: gray;">(Si se deja en blanco, se asumirá como 100%)</small>
-  </div>
-</div>
-
-
-
+      <!-- Botón de envío del formulario -->
       <button type="submit">Calcular</button>
     </form>
 
+    <!-- MOSTRAR RESULTADOS SI EXISTEN -->
     {% if resultado %}
-      <!-- Pestañas -->
+      <!-- Botones de navegación entre pestañas -->
       <div class="tabs">
         <button class="tab-btn active" onclick="openTab(event, 'resultados')">📋 Resultados</button>
         <button class="tab-btn" onclick="openTab(event, 'grafica')">📈 Gráfica</button>
         <button class="tab-btn" onclick="openTab(event, 'historial')">📚 Historial</button>
+        <button class="tab-btn" onclick="openTab(event, 'ejercicio')">🧠 Modo Ejercicio</button>
       </div>
 
-      <!-- Resultados -->
+      <!-- Pestaña de resultados numéricos -->
       <div id="resultados" class="tab-content active">
-        <div class="resultado">
-          <h2>📋 Resultados del cálculo</h2>
-          <p>Área de la oblea: {{ resultado.wafer }} cm²</p>
-          <p>Área de la pastilla: {{ resultado.chip }} cm²</p>
-          <p>Total de pastillas: {{ resultado.total }}</p>
-          <p>Rendimiento: {{ resultado.rendimiento }} %</p>
-          <p>Pastillas buenas: {{ resultado.buenas }}</p>
-          <p>Costo por pastilla buena: ${{ resultado.costo }}</p>
-        </div>
+        <h2>📋 Resultados del cálculo</h2>
+        <p>Área de la oblea: {{ resultado.wafer }} cm²</p>
+        <p>Área de la pastilla: {{ resultado.chip }} cm²</p>
+        <p>Total de pastillas: {{ resultado.total }}</p>
+        <p>Rendimiento: {{ resultado.rendimiento }} %</p>
+        <p>Pastillas buenas: {{ resultado.buenas }}</p>
+        <p>Costo por pastilla buena: ${{ resultado.costo }}</p>
+        {% if resultado.costo_ic %}
+          <p>🧠 Costo del circuito integrado: ${{ resultado.costo_ic }}</p>
+        {% endif %}
       </div>
 
-      <!-- Gráfica -->
+      <!-- Gráfica Plotly de rendimiento y costo -->
       <div id="grafica" class="tab-content">
         <div id="plotly-graph"></div>
         <script>
@@ -126,46 +145,26 @@
               line: { color: 'deepskyblue' }
             }
           ], {
-            title: {
-              text: 'Rendimiento y Costo vs Lado',
-              font: { size: 20 },
-              y: 0.92
-            },
-            margin: { l: 60, r: 80, t: 80, b: 60 },
-            xaxis: {
-              title: 'Lado de pastilla (cm)',
-              tickmode: 'linear',
-              tick0: 0.1,
-              dtick: 0.1,
-              range: [0, Math.max(...data.lados)]
-            },
+            title: 'Rendimiento y Costo vs Lado',
+            xaxis: { title: 'Lado de pastilla (cm)' },
             yaxis: {
               title: 'Rendimiento (%)',
-              side: 'right',
-              position: 0.95,
-              tickfont: { color: 'green' },
-              titlefont: { color: 'green' }
+              tickfont: { color: 'lime' },
+              titlefont: { color: 'lime' }
             },
             yaxis2: {
               title: 'Costo ($)',
               overlaying: 'y',
-              side: 'left',
-              showgrid: false,
+              side: 'right',
               tickfont: { color: 'deepskyblue' },
               titlefont: { color: 'deepskyblue' }
-            },
-            legend: {
-              x: 0.5,
-              y: -0.2,
-              xanchor: 'center',
-              orientation: 'h'
             }
           });
         </script>
       </div>
     {% endif %}
 
-    <!-- Historial -->
+    <!-- Tabla con historial de cálculos realizados (guardado en sesión local del navegador) -->
     <div id="historial" class="tab-content {% if not resultado %}active{% endif %}">
       <h2>📚 Historial de cálculos (sesión)</h2>
       <table id="tabla-historial">
@@ -181,85 +180,90 @@
         <tbody></tbody>
       </table>
     </div>
+
+    <!-- Modo educativo con ejercicios teóricos -->
+    <div id="ejercicio" class="tab-content">
+      <h2>🧠 Modo Ejercicio Teórico</h2>
+      <p>Selecciona el tipo de cálculo:</p>
+      <div class="campo">
+        <label for="tipo_calculo">Tipo de cálculo:</label>
+        <select id="tipo_calculo" onchange="mostrarOpcionesEjercicio()">
+          <option value="">-- Selecciona --</option>
+          <option value="pastilla">Costo por pastilla</option>
+          <option value="oblea_para_precio">Costo de oblea deseado</option>
+          <option value="ic">Costo circuito integrado</option>
+          <option value="comparacion">Comparación de costos</option>
+        </select>
+      </div>
+      <div id="formulario_ejercicio"></div>
+      <div id="resultado_ejercicio" style="margin-top: 15px;"></div>
+    </div>
   </div>
 
+  <!-- SCRIPT FUNCIONAL DE INTERFAZ -->
   <script>
+    // Cambia entre pestañas
     function openTab(evt, tabName) {
-      const tabcontents = document.getElementsByClassName("tab-content");
-      const tabbuttons = document.getElementsByClassName("tab-btn");
-
-      for (let i = 0; i < tabcontents.length; i++) {
-        tabcontents[i].style.display = "none";
-        tabcontents[i].classList.remove("active");
-      }
-
-      for (let i = 0; i < tabbuttons.length; i++) {
-        tabbuttons[i].classList.remove("active");
-      }
-
-      document.getElementById(tabName).style.display = "block";
+      const tabs = document.getElementsByClassName("tab-content");
+      const buttons = document.getElementsByClassName("tab-btn");
+      for (let t of tabs) t.classList.remove("active");
+      for (let b of buttons) b.classList.remove("active");
       document.getElementById(tabName).classList.add("active");
       evt.currentTarget.classList.add("active");
     }
 
-    function guardarEnHistorial(d, l, dens, rend, cost) {
-      const nuevo = { d, l, dens, rend, cost };
-      const historial = JSON.parse(sessionStorage.getItem('historial')) || [];
-      historial.push(nuevo);
-      sessionStorage.setItem('historial', JSON.stringify(historial));
-      mostrarHistorial();
+    // Muestra u oculta los campos del circuito integrado
+    function mostrarCamposExtras() {
+      const check = document.getElementById('usar_extra');
+      document.getElementById('extra_fields').style.display = check.checked ? 'block' : 'none';
     }
 
+    // Muestra el historial guardado en sessionStorage
     function mostrarHistorial() {
-      const historial = JSON.parse(sessionStorage.getItem('historial')) || [];
+      const hist = JSON.parse(sessionStorage.getItem('historial')) || [];
       const tbody = document.querySelector("#tabla-historial tbody");
       tbody.innerHTML = "";
-      historial.forEach(item => {
-        const fila = `<tr>
+      hist.forEach(item => {
+        tbody.innerHTML += `<tr>
           <td>${item.d}</td>
           <td>${item.l}</td>
           <td>${item.dens}</td>
           <td>${item.rend}</td>
           <td>${item.cost}</td>
         </tr>`;
-        tbody.innerHTML += fila;
       });
     }
 
-    window.onload = function () {
-      const activeTab = document.querySelector('.tab-content.active');
-      if (activeTab) activeTab.style.display = "block";
-      mostrarHistorial();
+    // Carga el formulario según el tipo de ejercicio teórico seleccionado
+    function mostrarOpcionesEjercicio() {
+      const tipo = document.getElementById('tipo_calculo').value;
+      const form = document.getElementById('formulario_ejercicio');
+      const res = document.getElementById('resultado_ejercicio');
+      res.innerHTML = "";
+      if (tipo === "pastilla") {
+        form.innerHTML = `...`;
+      } else if (tipo === "oblea_para_precio") {
+        form.innerHTML = `...`;
+      } else if (tipo === "ic") {
+        form.innerHTML = `...`;
+      } else if (tipo === "comparacion") {
+        form.innerHTML = `...`;
+      } else {
+        form.innerHTML = "";
+      }
     }
 
-    <script>
-  function mostrarCamposExtras() {
-    const check = document.getElementById('usar_extra');
-    const extraFields = document.getElementById('extra_fields');
-    extraFields.style.display = check.checked ? 'block' : 'none';
-  };
-</script>
+    // Cálculos para el modo educativo
+    function calcularPastilla() { ... }
+    function calcularObleaDesdePrecio() { ... }
+    function calcularIC() { ... }
+    function compararCostos() { ... }
 
+    // Ejecutar funciones al cargar la página
+    window.onload = function () {
+      mostrarCamposExtras();
+      mostrarHistorial();
+    };
   </script>
-
-  {% if resultado %}
-  <script>
-    guardarEnHistorial(
-      "{{ request.form['diametro'] }}",
-      "{{ request.form['lado'] }}",
-      "{{ request.form['densidad'] }}",
-      "{{ resultado.rendimiento }}",
-      "{{ resultado.costo }}"
-    );
-    
-  </script>
-  {% endif %}
-
-  {% if resultado.costo_ic %}
-    <h3>🧠 Cálculos adicionales (Circuito Integrado)</h3>
-    <p>Costo total por circuito integrado: ${{ resultado.costo_ic }}</p>
-  {% endif %}
-
-
 </body>
 </html>
