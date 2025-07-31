@@ -75,7 +75,7 @@
       <button type="submit">Calcular</button>
     </form>
 
-    <!-- Botones de pestañas siempre visibles -->
+    <!-- Botones de pestañas -->
     <div class="tabs">
       <button class="tab-btn active" onclick="openTab(event, 'resultados')">📋 Resultados</button>
       <button class="tab-btn" onclick="openTab(event, 'grafica')">📈 Gráfica</button>
@@ -83,7 +83,7 @@
       <button class="tab-btn" onclick="openTab(event, 'ejercicio')">🧠 Modo Ejercicio</button>
     </div>
 
-    <!-- Resultados -->
+    <!-- Pestaña Resultados -->
     <div id="resultados" class="tab-content active">
       <h2>📋 Resultados del cálculo</h2>
       {% if resultado %}
@@ -101,7 +101,7 @@
       {% endif %}
     </div>
 
-    <!-- Gráfica -->
+    <!-- Pestaña Gráfica -->
     <div id="grafica" class="tab-content">
       {% if resultado %}
         <div id="plotly-graph"></div>
@@ -148,7 +148,7 @@
       {% endif %}
     </div>
 
-    <!-- Historial -->
+    <!-- Pestaña Historial -->
     <div id="historial" class="tab-content">
       <h2>📚 Historial de cálculos (sesión)</h2>
       <table id="tabla-historial">
@@ -165,7 +165,7 @@
       </table>
     </div>
 
-    <!-- Modo educativo -->
+    <!-- Pestaña Ejercicio -->
     <div id="ejercicio" class="tab-content">
       <h2>🧠 Modo Ejercicio Teórico</h2>
       <p>Selecciona el tipo de cálculo:</p>
@@ -184,6 +184,7 @@
     </div>
   </div>
 
+  <!-- JS funcional -->
   <script>
     function openTab(evt, tabName) {
       const tabs = document.getElementsByClassName("tab-content");
@@ -214,24 +215,40 @@
       });
     }
 
-    window.onload = function () {
-    mostrarCamposExtras();
-    mostrarHistorial();
-  
-    // Guardar resultado actual si existe
-    {% if resultado %}
-      const historial = JSON.parse(sessionStorage.getItem('historial')) || [];
-      historial.push({
-        d: "{{ request.form['diametro'] }} {{ request.form['udiam'] }}",
-        l: "{{ request.form['lado'] }} {{ request.form['ulado'] }}",
-        dens: "{{ request.form['densidad'] }}",
-        rend: "{{ resultado.rendimiento }}",
-        cost: "{{ resultado.costo }}"
-      });
-      sessionStorage.setItem('historial', JSON.stringify(historial));
-    {% endif %}
-  };
+    function mostrarOpcionesEjercicio() {
+      // Aquí van tus formularios dinámicos
+    }
 
+    window.onload = function () {
+      mostrarCamposExtras();
+      mostrarHistorial();
+    };
   </script>
+
+  <!-- Guardar en sessionStorage si hay resultado -->
+  {% if resultado %}
+  <script>
+    const nuevo = {
+      d: "{{ request.form['diametro'] }} {{ request.form['udiam'] }}",
+      l: "{{ request.form['lado'] }} {{ request.form['ulado'] }}",
+      dens: "{{ request.form['densidad'] }}",
+      rend: "{{ resultado.rendimiento }}",
+      cost: "{{ resultado.costo }}"
+    };
+
+    let historial = JSON.parse(sessionStorage.getItem('historial')) || [];
+
+    if (!historial.some(h =>
+      h.d === nuevo.d &&
+      h.l === nuevo.l &&
+      h.dens === nuevo.dens &&
+      h.rend === nuevo.rend &&
+      h.cost === nuevo.cost
+    )) {
+      historial.push(nuevo);
+      sessionStorage.setItem('historial', JSON.stringify(historial));
+    }
+  </script>
+  {% endif %}
 </body>
 </html>
