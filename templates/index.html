@@ -51,6 +51,31 @@
         <small style="color: gray;">(Si se deja en blanco, se asumirá como 100%)</small>
       </div>
 
+      <div class="campo">
+  <label>
+    <input type="checkbox" id="usar_extra" name="usar_extra" onchange="mostrarCamposExtras()"> Calcular con datos del circuito integrado (opcional)
+  </label>
+</div>
+
+<div id="extra_fields" style="display: none;">
+  <div class="campo">
+    <label>Costo de prueba por pastilla (USD):</label>
+    <input name="costo_prueba" type="number" step="0.01" min="0">
+  </div>
+
+  <div class="campo">
+    <label>Costo de empaquetado por pastilla (USD):</label>
+    <input name="costo_empaque" type="number" step="0.01" min="0">
+  </div>
+
+  <div class="campo">
+    <label>Rendimiento de prueba final (%):</label>
+    <input name="rend_final" type="number" placeholder="100" min="0" max="100">
+    <small style="color: gray;">(Si se deja en blanco, se asumirá como 100%)</small>
+  </div>
+</div>
+
+
 
       <button type="submit">Calcular</button>
     </form>
@@ -205,7 +230,16 @@
       const activeTab = document.querySelector('.tab-content.active');
       if (activeTab) activeTab.style.display = "block";
       mostrarHistorial();
-    };
+    }
+
+    <script>
+  function mostrarCamposExtras() {
+    const check = document.getElementById('usar_extra');
+    const extraFields = document.getElementById('extra_fields');
+    extraFields.style.display = check.checked ? 'block' : 'none';
+  };
+</script>
+
   </script>
 
   {% if resultado %}
@@ -217,7 +251,14 @@
       "{{ resultado.rendimiento }}",
       "{{ resultado.costo }}"
     );
+    
   </script>
   {% endif %}
+
+  {% if resultado.circuito %}
+  <h3>🧠 Cálculos adicionales (Circuito Integrado)</h3>
+  <p>Costo total por circuito integrado: ${{ resultado.circuito }}</p>
+  {% endif %}
+
 </body>
 </html>
