@@ -255,10 +255,11 @@
   </script>
   {% endif %}
 
-  {% if resultado.circuito %}
-  <h3>🧠 Cálculos adicionales (Circuito Integrado)</h3>
-  <p>Costo total por circuito integrado: ${{ resultado.circuito }}</p>
+  {% if resultado.costo_ic %}
+    <h3>🧠 Cálculos adicionales (Circuito Integrado)</h3>
+    <p>Costo total por circuito integrado: ${{ resultado.costo_ic }}</p>
   {% endif %}
+
 
 </body>
 </html>
