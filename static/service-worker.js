@@ -3,7 +3,6 @@ self.addEventListener('install', e => {
     caches.open('static').then(cache => {
       return cache.addAll([
         '/',
-        '/static/style.css',
         '/static/manifest.json',
         '/static/icon-1.jpg'
       ]);
@@ -18,4 +17,5 @@ self.addEventListener('fetch', e => {
     })
   );
 });
+
 
