@@ -151,51 +151,64 @@ button:hover {
 }
 
 /* ========== RESPONSIVE: Solo para móviles ========== */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   body {
     padding: 20px 10px;
-    flex-direction: column;
   }
 
   .container {
-    padding: 20px;
-    flex-direction: column;
-    gap: 10px;
+    padding: 20px 15px;
+    border-radius: 15px;
+    box-shadow: none;
   }
 
   h1 {
-    font-size: 22px;
+    font-size: 20px;
+    margin-bottom: 20px;
   }
 
   .campo {
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
+  }
+
+  .campo label {
+    font-size: 15px;
+    margin-bottom: 5px;
   }
 
   .campo input,
   .campo select {
-    padding: 14px;
-    font-size: 17px;
-  }
-
-  .tab-btn {
     font-size: 15px;
-    width: 100%;
-    justify-content: center;
-  }
-
-  #plotly-graph {
-    min-height: 280px;
-  }
-
-  #tabla-historial {
-    display: block;
-    overflow-x: auto;
-    font-size: 14px;
+    padding: 12px;
+    border-radius: 10px;
   }
 
   button {
-    padding: 18px;
-    font-size: 18px;
+    padding: 14px;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tab-btn {
+    width: 100%;
+    font-size: 16px;
+    padding: 14px;
+  }
+
+  #resultado_ejercicio {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  #plotly-graph {
+    min-height: 300px;
   }
 }
+
