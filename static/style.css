@@ -1,4 +1,4 @@
-/* Estilos globales */
+/* ========== ESTILO BASE: Escritorio ========== */
 body {
   background: #1f1f2f;
   color: #f8f8f8;
@@ -9,7 +9,6 @@ body {
   margin: 0;
 }
 
-/* Contenedor principal */
 .container {
   background: #29293d;
   padding: 40px 30px;
@@ -23,30 +22,25 @@ body {
   gap: 20px;
 }
 
-/* Título principal */
 h1 {
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
   width: 100%;
 }
-
 h1::before {
   content: "🧮 ";
 }
 
-/* Formulario */
 .formulario {
   flex: 1 1 300px;
   margin-bottom: 30px;
 }
-
 .campo {
   margin-bottom: 20px;
   display: flex;
   gap: 10px;
 }
-
 .campo input,
 .campo select {
   padding: 10px;
@@ -57,14 +51,12 @@ h1::before {
   background-color: #3b3b51;
   color: white;
 }
-
 .campo input:focus,
 .campo select:focus {
   outline: none;
   box-shadow: 0 0 5px #2dd4bf;
 }
 
-/* Botón principal */
 button {
   background: #2dd4bf;
   border: none;
@@ -78,12 +70,10 @@ button {
   margin-top: 15px;
   transition: background 0.3s ease;
 }
-
 button:hover {
   background: #1cc8ad;
 }
 
-/* Pestañas */
 .tabs {
   display: flex;
   justify-content: space-around;
@@ -96,35 +86,26 @@ button:hover {
 .tab-btn {
   background: #444;
   border: none;
-  padding: 4px 8px;
+  padding: 6px 10px;
   margin: 20px 4px;
   border-radius: 10px;
   color: white;
   cursor: pointer;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   transition: background 0.3s ease;
   display: flex;
   align-items: center;
   gap: 4px;
-  text-align: center;
 }
-
-.tab-btn.active {
-  background: #2dd4bf;
-}
-
-
-.tab-btn:hover {
-  background: #666;
-}
-
 .tab-btn.active {
   background: #2dd4bf;
   color: black;
 }
+.tab-btn:hover {
+  background: #666;
+}
 
-/* Contenido de pestañas */
 .tab-content {
   display: none;
   background: #1b1b2e;
@@ -136,31 +117,14 @@ button:hover {
   animation: fadeIn 0.3s ease-in-out;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
 }
-
 .tab-content.active {
   display: block;
 }
 
-/* Resultados */
-.resultado p {
-  font-size: 16px;
-  margin: 8px 0;
-}
-
-/* Gráfica */
 #plotly-graph {
   width: 100%;
   min-height: 400px;
   margin-top: 20px;
-}
-
-/* Historial */
-.historial {
-  flex: 1 1 300px;
-}
-
-.historial h2 {
-  margin-top: 0;
 }
 
 #tabla-historial {
@@ -170,41 +134,68 @@ button:hover {
   font-size: 15px;
   color: white;
 }
-
 #tabla-historial th,
 #tabla-historial td {
   border: 1px solid #555;
   padding: 8px;
   text-align: center;
 }
-
 #tabla-historial th {
   background-color: #374151;
   color: #14d8dc;
 }
 
-/* Animación suave */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsivo */
+/* ========== RESPONSIVE: Solo para móviles ========== */
 @media (max-width: 768px) {
-  .tabs {
+  body {
+    padding: 20px 10px;
     flex-direction: column;
   }
-  .container {
-    flex-direction: column;
-  }
-}
 
-#resultado_ejercicio {
-  background-color: #22253a;
-  padding: 15px 20px;
-  border-radius: 10px;
-  margin-top: 20px;
-  border-left: 4px solid #2dd4bf;
-  font-size: 16px;
-  animation: fadeIn 0.4s ease-in-out;
+  .container {
+    padding: 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .campo {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .campo input,
+  .campo select {
+    padding: 14px;
+    font-size: 17px;
+  }
+
+  .tab-btn {
+    font-size: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  #plotly-graph {
+    min-height: 280px;
+  }
+
+  #tabla-historial {
+    display: block;
+    overflow-x: auto;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 18px;
+    font-size: 18px;
+  }
 }
