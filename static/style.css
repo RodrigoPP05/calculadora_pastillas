@@ -157,15 +157,25 @@ button:hover {
   }
 
   .container {
-    padding: 20px 15px;
-    border-radius: 15px;
-    box-shadow: none;
-  }
+    background: #29293d;
+    padding: 40px 100px;
+    border-radius: 20px;
+    max-width: 1000px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 42px;
+}
 
   h1 {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 35px;
+    width: 100%;
+}
 
   .campo {
     flex-direction: column;
@@ -185,10 +195,19 @@ button:hover {
   }
 
   button {
-    padding: 14px;
+    background: #2dd4bf;
+    border: none;
+    color: white;
+    padding: 15px;
     font-size: 16px;
-    margin-top: 10px;
-  }
+    font-weight: bold;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s ease;
+    font-size: 35px;
+}
 
   .tabs {
     display: flex;
@@ -197,10 +216,34 @@ button:hover {
   }
 
   .tab-btn {
+    background: #444;
+    border: none;
+    padding: 6px 10px;
+    margin: 20px 4px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 35px;
+}
+
+  .tab-content {
+    display: none;
+    background: #1b1b2e;
+    padding: 25px;
+    border-radius: 10px;
+    overflow: auto;
     width: 100%;
-    font-size: 16px;
-    padding: 14px;
-  }
+    box-sizing: border-box;
+    animation: fadeIn 0.3s ease-in-out;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    text-align: center;
+}
 
   #resultado_ejercicio {
     font-size: 15px;
@@ -211,4 +254,5 @@ button:hover {
     min-height: 300px;
   }
 }
+
 
