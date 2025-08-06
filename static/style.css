@@ -36,11 +36,13 @@ h1::before {
   flex: 1 1 300px;
   margin-bottom: 30px;
 }
+
 .campo {
   margin-bottom: 20px;
   display: flex;
   gap: 10px;
 }
+
 .campo input,
 .campo select {
   padding: 10px;
@@ -51,29 +53,33 @@ h1::before {
   background-color: #3b3b51;
   color: white;
 }
+
 .campo input:focus,
 .campo select:focus {
   outline: none;
   box-shadow: 0 0 5px #2dd4bf;
 }
 
+/* === BOTÓN BASE (ESCRITORIO) === */
 button {
   background: #2dd4bf;
   border: none;
   color: white;
-  padding: 15px;
+  padding: 6px 15px; /* 🔹 más delgado verticalmente */
   font-size: 16px;
   font-weight: bold;
   border-radius: 10px;
-  width: 100%;
+  width: 100%; /* Ocupa todo el ancho del contenedor */
   cursor: pointer;
   margin-top: 15px;
   transition: background 0.3s ease;
 }
+
 button:hover {
   background: #1cc8ad;
 }
 
+/* === Pestañas === */
 .tabs {
   display: flex;
   justify-content: space-around;
@@ -98,14 +104,17 @@ button:hover {
   align-items: center;
   gap: 4px;
 }
+
 .tab-btn.active {
   background: #2dd4bf;
   color: black;
 }
+
 .tab-btn:hover {
   background: #666;
 }
 
+/* === Contenido de pestañas === */
 .tab-content {
   display: none;
   background: #1b1b2e;
@@ -117,10 +126,12 @@ button:hover {
   animation: fadeIn 0.3s ease-in-out;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
 }
+
 .tab-content.active {
   display: block;
 }
 
+/* === Gráfica y tabla === */
 #plotly-graph {
   width: 100%;
   min-height: 400px;
@@ -134,17 +145,20 @@ button:hover {
   font-size: 15px;
   color: white;
 }
+
 #tabla-historial th,
 #tabla-historial td {
   border: 1px solid #555;
   padding: 8px;
   text-align: center;
 }
+
 #tabla-historial th {
   background-color: #374151;
   color: #14d8dc;
 }
 
+/* === Animación === */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -157,25 +171,13 @@ button:hover {
   }
 
   .container {
-    background: #29293d;
-    padding: 40px 100px;
-    border-radius: 20px;
-    max-width: 1000px;
-    width: 100%;
-    box-sizing: border-box;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    padding: 40px 20px;
     font-size: 42px;
-}
+  }
 
   h1 {
-    text-align: center;
-    margin-bottom: 30px;
     font-size: 35px;
-    width: 100%;
-}
+  }
 
   .campo {
     flex-direction: column;
@@ -194,56 +196,26 @@ button:hover {
     border-radius: 10px;
   }
 
+  /* === BOTÓN RESPONSIVE === */
   button {
-    background: #2dd4bf;
-    border: none;
-    color: white;
-    padding: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 10px;
+    padding: 8px 15px;   /* 🔹 ligeramente más grande para facilitar el toque */
+    font-size: 24px;     /* 🔹 más legible en móvil */
     width: 100%;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: background 0.3s ease;
-    font-size: 35px;
-}
+  }
 
   .tabs {
-    display: flex;
     flex-direction: column;
     gap: 10px;
   }
 
   .tab-btn {
-    background: #444;
-    border: none;
-    padding: 6px 10px;
-    margin: 20px 4px;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: background 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 35px;
-}
+    font-size: 24px;
+    padding: 10px 15px;
+  }
 
   .tab-content {
-    display: none;
-    background: #1b1b2e;
-    padding: 25px;
-    border-radius: 10px;
-    overflow: auto;
-    width: 100%;
-    box-sizing: border-box;
-    animation: fadeIn 0.3s ease-in-out;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
     text-align: center;
-}
+  }
 
   #resultado_ejercicio {
     font-size: 15px;
@@ -254,5 +226,3 @@ button:hover {
     min-height: 300px;
   }
 }
-
-
