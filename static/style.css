@@ -165,7 +165,7 @@ button:hover {
 }
 
 /* ========== RESPONSIVE: Solo para móviles ========== */
-@media (max-width: 600px) {
+@media (max-width: 500px) {
   body {
     padding: 20px 10px;
   }
@@ -226,3 +226,4 @@ button:hover {
     min-height: 300px;
   }
 }
+
