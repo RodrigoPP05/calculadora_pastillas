@@ -37,29 +37,27 @@ h1::before {
   margin-bottom: 20px;
   display: flex;
   gap: 10px;
-  align-items: center; /* Alinea los elementos verticalmente */
+  align-items: center;  /* Alinea verticalmente label e input */
+  flex-wrap: wrap;
 }
 
 .campo label {
-  flex-basis: 300px;
+  flex-basis: 300px;     /* Ancho fijo para etiquetas */
+  flex-shrink: 0;
 }
 
 .campo input,
 .campo select {
+  flex: 1;               /* El input ocupa el espacio restante */
   padding: 10px;
   border-radius: 8px;
   border: none;
   font-size: 15px;
-  flex: 1;
   background-color: #3b3b51;
   color: white;
+  min-width: 150px;
 }
 
-.campo input:focus,
-.campo select:focus {
-  outline: none;
-  box-shadow: 0 0 5px #2dd4bf;
-}
 
 /* ========== BOTÓN BASE ========== */
 button {
@@ -272,3 +270,4 @@ canvas#graficoChart {
     height: 300px;
   }
 }
+
