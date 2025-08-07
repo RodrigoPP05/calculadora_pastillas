@@ -226,14 +226,19 @@ button:hover {
     padding: 12px !important;
   }
 
+   #plotly-graph .main-svg {
+    width: 100% !important;
+    height: auto !important;
+  }
+
   #plotly-graph {
-  width: 100% !important;
-  height: auto !important;
-  min-height: 300px;
-  margin-top: 20px;
-}
+    overflow-x: auto !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
 
 }
+
 
 
 
