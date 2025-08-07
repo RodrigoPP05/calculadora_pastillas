@@ -7,7 +7,19 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="manifest" href="/static/manifest.json"/>
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <meta name="theme-color" content="#14d8dc">
+  <style>
+    #graficoChart-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+    canvas#graficoChart {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  </style>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/static/service-worker.js')
@@ -104,78 +116,119 @@
 
         <!-- Pestaña Gráfica -->
     <div id="grafica" class="tab-content">
-      {% if resultado %}
-        <div id="plotly-graph"></div>
-        <script>
-          const data = {{ plot_data | safe }};
-          const lado_actual = {{ request.form['lado'] | float }};
-          const rendimiento_actual = {{ resultado.rendimiento }};
-          const costo_actual = {{ resultado.costo }};
-    
-          Plotly.newPlot('plotly-graph', [
-            {
-              x: data.lados,
-              y: data.rendimientos,
-              name: 'Rendimiento (%)',
-              yaxis: 'y',
-              mode: 'lines+markers',
-              marker: { color: 'lime' },
-              line: { color: 'lime' }
-            },
-            {
-              x: data.lados,
-              y: data.costos,
-              name: 'Costo por pastilla ($)',
-              yaxis: 'y2',
-              mode: 'lines+markers',
-              marker: { color: 'deepskyblue' },
-              line: { color: 'deepskyblue' }
-            },
-            {
-              x: [lado_actual],
-              y: [rendimiento_actual],
-              name: '📍 Rendimiento actual',
-              yaxis: 'y',
-              mode: 'markers',
-              marker: {
-                color: 'green',
-                size: 12,
-                symbol: 'star'
+    {% if tiene_plot %}
+      <div id="graficoChart-container">
+        <canvas id="graficoChart"></canvas>
+      </div>
+      <script>
+        const ctx = document.getElementById('graficoChart').getContext('2d');
+
+        const chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: {{ plot_data.lados | tojson | safe }},
+            datasets: [
+              {
+                label: 'Rendimiento (%)',
+                data: {{ plot_data.rendimientos | tojson | safe }},
+                borderColor: 'lime',
+                backgroundColor: 'transparent',
+                yAxisID: 'y1',
+                pointRadius: 4,
+                tension: 0.3
+              },
+              {
+                label: 'Costo por pastilla ($)',
+                data: {{ plot_data.costos | tojson | safe }},
+                borderColor: 'deepskyblue',
+                backgroundColor: 'transparent',
+                yAxisID: 'y2',
+                pointRadius: 4,
+                tension: 0.3
+              },
+              {
+                label: '📍 Rendimiento actual',
+                data: [{ x: {{ resultado.lado|default(0) }}, y: {{ resultado.rendimiento|default(0) }} }],
+                borderColor: 'transparent',
+                backgroundColor: 'green',
+                pointStyle: 'star',
+                pointRadius: 8,
+                yAxisID: 'y1',
+                showLine: false
+              },
+              {
+                label: '📍 Costo actual',
+                data: [{ x: {{ resultado.lado|default(0) }}, y: {{ resultado.costo|default(0) }} }],
+                borderColor: 'transparent',
+                backgroundColor: 'red',
+                pointStyle: 'rectRot',
+                pointRadius: 8,
+                yAxisID: 'y2',
+                showLine: false
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Lado de pastilla (cm)',
+                  color: 'white'
+                },
+                ticks: {
+                  color: 'white'
+                }
+              },
+              y1: {
+                type: 'linear',
+                position: 'left',
+                title: {
+                  display: true,
+                  text: 'Rendimiento (%)',
+                  color: 'lime'
+                },
+                ticks: {
+                  color: 'lime'
+                }
+              },
+              y2: {
+                type: 'linear',
+                position: 'right',
+                title: {
+                  display: true,
+                  text: 'Costo ($)',
+                  color: 'deepskyblue'
+                },
+                ticks: {
+                  color: 'deepskyblue'
+                },
+                grid: {
+                  drawOnChartArea: false
+                }
               }
             },
-            {
-              x: [lado_actual],
-              y: [costo_actual],
-              name: '📍 Costo actual',
-              yaxis: 'y2',
-              mode: 'markers',
-              marker: {
-                color: 'red',
-                size: 12,
-                symbol: 'diamond'
+            plugins: {
+              legend: {
+                labels: {
+                  color: 'white'
+                }
+              },
+              title: {
+                display: true,
+                text: 'Rendimiento y Costo vs Lado',
+                color: 'white'
               }
             }
-          ], {
-            title: 'Rendimiento y Costo vs Lado',
-            xaxis: { title: 'Lado de pastilla (cm)' },
-            yaxis: {
-              title: 'Rendimiento (%)',
-              tickfont: { color: 'lime' },
-              titlefont: { color: 'lime' }
-            },
-            yaxis2: {
-              title: 'Costo ($)',
-              overlaying: 'y',
-              side: 'right',
-              tickfont: { color: 'deepskyblue' },
-              titlefont: { color: 'deepskyblue' }
-            }
-          });
-        </script>
-      {% else %}
-        <p>📉 La gráfica aparecerá luego de realizar un cálculo.</p>
-      {% endif %}
-    </div>
+          }
+        });
+      </script>
+    {% else %}
+      <p>📉 La gráfica aparecerá luego de realizar un cálculo válido.</p>
+    {% endif %}
+  </div>
 
     <!-- Pestaña Historial -->
     <div id="historial" class="tab-content">
@@ -353,14 +406,10 @@ function compararCostos() {
     <p>🔹 Costo nuevo del IC: $${c2.toFixed(2)}</p>
     <p>🔹 Incremento: ${factor.toFixed(2)} veces</p>`;
 }
-
-  Plotly.newPlot('plotly-graph', data, layout, { responsive: true });
-
 </script>
 
 </body>
 </html>
-
 
 
 
