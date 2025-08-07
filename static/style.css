@@ -206,13 +206,13 @@ button:hover {
 
   .tabs {
     flex-direction: column !important;
-    gap: 10px !important
+    gap: 10px !important;
     margin: auto;
   }
 
   .tab-btn {
     font-size: 24px !important;
-    padding: 10px 108px !important;
+    padding: 0px 80px !important;
     margin: 0px;
   }
 
@@ -230,4 +230,5 @@ button:hover {
     min-height: 300px !important;
   }
 }
+
 
