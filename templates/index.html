@@ -29,12 +29,11 @@
 </head>
 
 <body>
-  <div id="loader-wrapper">
-  <div>
-    <div class="loader"></div>
-    <div id="loader-text">Cargando...</div>
-  </div>
+  <div id="custom-loader">
+  <div class="spinner"></div>
+  <p>Cargando Calculadora...</p>
 </div>
+
 
 
   <div class="container">
@@ -417,15 +416,18 @@ function compararCostos() {
 </script>
 
 <script>
-  window.addEventListener("load", () => {
-    document.body.classList.add("loaded");
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('custom-loader');
+    if (loader) {
+      loader.style.display = 'none';
+    }
   });
 </script>
 
 
+
 </body>
 </html>
-
 
 
 
