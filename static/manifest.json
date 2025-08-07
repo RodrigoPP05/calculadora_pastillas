@@ -8,7 +8,7 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/static/images/mi-icono-splash.png",
+      "src": "/static/images/Gemini_Generated_Image_q5sc6aq5sc6aq5sc.jpeg",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -463,4 +463,5 @@
     }
   ]
 }
+
 
