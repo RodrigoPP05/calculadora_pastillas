@@ -1,160 +1,206 @@
-/* Estilo general */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* ========== ESTILO BASE: Escritorio ========== */
+html, body {
+  background: #1f1f2f;
+  color: #f8f8f8;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #111827;
-  color: white;
+  height: 100%;
 }
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 30px 20px;
+  background: #29293d;
+  padding: 40px 30px;
+  border-radius: 20px;
+  max-width: 1000px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  margin: 50px auto; /* Centra el contenedor en la página */
 }
 
-h1, h2 {
-  color: #14d8dc;
+h1 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  font-size: 28px;
+  width: 100%;
+}
+h1::before {
+  content: "🧮 ";
 }
 
-/* Formulario */
 .formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .campo {
+  margin-bottom: 20px;
   display: flex;
-  align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
+  align-items: center; /* Alinea los elementos verticalmente */
 }
 
 .campo label {
-  width: 200px;
-  font-weight: bold;
-  color: white;
+  flex-basis: 300px;
 }
 
 .campo input,
 .campo select {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
   flex: 1;
-  padding: 6px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  background-color: #3b3b51;
+  color: white;
 }
 
-/* Botón */
+.campo input:focus,
+.campo select:focus {
+  outline: none;
+  box-shadow: 0 0 5px #2dd4bf;
+}
+
+/* ========== BOTÓN BASE ========== */
 button {
-  padding: 10px 20px;
-  background-color: #14d8dc;
-  color: #000;
+  background: #2dd4bf;
   border: none;
-  border-radius: 6px;
+  color: white;
+  padding: 6px 15px;
+  font-size: 16px;
   font-weight: bold;
+  border-radius: 10px;
+  width: 100%;
   cursor: pointer;
-  transition: 0.3s ease;
+  margin-top: 15px;
+  transition: background 0.3s ease;
 }
 
 button:hover {
-  background-color: #0ea5e9;
+  background: #1cc8ad;
 }
 
-/* Tabs */
+/* ========== TABS ========== */
 .tabs {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 25px;
+  justify-content: space-around;
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
 .tab-btn {
-  padding: 8px 16px;
-  background-color: #374151;
+  background: #444;
   border: none;
-  border-radius: 6px;
+  padding: 6px 10px;
+  margin: 0px;
+  border-radius: 10px;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.tab-btn:hover {
-  background-color: #4b5563;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .tab-btn.active {
-  background-color: #14d8dc;
-  color: #000;
+  background: #2dd4bf;
+  color: black;
 }
 
-/* Contenido de cada pestaña */
+.tab-btn:hover {
+  background: #666;
+}
+
+/* ========== TAB CONTENT ========== */
 .tab-content {
   display: none;
-  margin-top: 30px;
+  background: #1b1b2e;
+  padding: 25px;
+  border-radius: 10px;
+  overflow: auto;
+  width: 100%;
+  box-sizing: border-box;
+  animation: fade-in-tab 0.3s ease-in-out;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
 }
 
 .tab-content.active {
   display: block;
 }
 
-/* Tabla de historial */
-table {
+/* ========== PLOT & TABLA ========== */
+#graficoChart-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+}
+canvas#graficoChart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#tabla-historial {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
-  background-color: #1f2937;
+  margin-top: 10px;
+  font-size: 15px;
+  color: white;
 }
 
-table th,
-table td {
-  border: 1px solid #374151;
+#tabla-historial th,
+#tabla-historial td {
+  border: 1px solid #555;
   padding: 8px;
   text-align: center;
-  color: white;
 }
 
-table th {
-  background-color: #111827;
-  font-weight: bold;
+#tabla-historial th {
+  background-color: #374151;
+  color: #14d8dc;
 }
 
-/* Splash screen */
+/* ========== SPLASH SCREEN ========== */
 #custom-splash {
   position: fixed;
-  z-index: 9999;
-  background-color: #111827;
-  color: white;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0f172a;
+  color: white;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
-  transition: opacity 0.5s ease-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .spinner {
-  border: 4px solid #14d8dc;
-  border-top: 4px solid transparent;
+  width: 70px;
+  height: 70px;
+  border: 8px solid rgba(255, 255, 255, 0.3);
+  border-top: 8px solid #14d8dc;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
   animation: spin 1s linear infinite;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* ========== ANIMACIONES ========== */
+@keyframes fade-in-tab {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
-
 
 /* ========== RESPONSIVE: MÓVILES ========== */
 @media (max-width: 600px) {
@@ -226,5 +272,3 @@ table th {
     height: 300px;
   }
 }
-
-
