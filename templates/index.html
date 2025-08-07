@@ -29,6 +29,11 @@
 </head>
 
 <body>
+  <div id="loader">
+  <div class="spinner"></div>
+  <p class="loading-text">Cargando...</p>
+</div>
+
   <div class="container">
     <h1>Calculadora de rendimiento de pastillas</h1>
 
@@ -407,6 +412,13 @@ function compararCostos() {
     <p>🔹 Incremento: ${factor.toFixed(2)} veces</p>`;
 }
 </script>
+
+<script>
+  window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+  });
+</script>
+
 
 </body>
 </html>
