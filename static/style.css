@@ -1,11 +1,12 @@
 /* ========== ESTILO BASE: Escritorio ========== */
-html, body {
+body {
   background: #1f1f2f;
   color: #f8f8f8;
   font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px;
   margin: 0;
-  padding: 0;
-  height: 100%;
 }
 
 .container {
@@ -16,7 +17,9 @@ html, body {
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-  margin: 50px auto; /* Centra el contenedor en la página */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 h1 {
@@ -30,6 +33,7 @@ h1::before {
 }
 
 .formulario {
+  flex: 1 1 300px;
   margin-bottom: 30px;
 }
 
@@ -37,11 +41,6 @@ h1::before {
   margin-bottom: 20px;
   display: flex;
   gap: 10px;
-  align-items: center; /* Alinea los elementos verticalmente */
-}
-
-.campo label {
-  flex-basis: 300px;
 }
 
 .campo input,
@@ -84,7 +83,7 @@ button:hover {
 .tabs {
   display: flex;
   justify-content: space-around;
-  margin-top: 10px;
+  margin-top: -20px;
   margin-bottom: 10px;
   flex-wrap: wrap;
   gap: 10px;
@@ -94,7 +93,7 @@ button:hover {
   background: #444;
   border: none;
   padding: 6px 10px;
-  margin: 0px;
+  margin: 20px 4px;
   border-radius: 10px;
   color: white;
   cursor: pointer;
@@ -104,8 +103,6 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 4px;
-  flex-grow: 1;
-  justify-content: center;
 }
 
 .tab-btn.active {
@@ -126,7 +123,7 @@ button:hover {
   overflow: auto;
   width: 100%;
   box-sizing: border-box;
-  animation: fade-in-tab 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
 }
 
@@ -135,15 +132,16 @@ button:hover {
 }
 
 /* ========== PLOT & TABLA ========== */
-#graficoChart-container {
-  position: relative;
-  width: 100%;
-  height: 400px;
-}
-canvas#graficoChart {
+#graficoChart {
   width: 100% !important;
-  height: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9;
+  max-height: 500px;
 }
+
+
+
+
 
 #tabla-historial {
   width: 100%;
@@ -165,7 +163,11 @@ canvas#graficoChart {
   color: #14d8dc;
 }
 
-/* ========== SPLASH SCREEN ========== */
+/* ========== ANIMACIONES ========== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 #custom-splash {
   position: fixed;
   top: 0;
@@ -179,96 +181,97 @@ canvas#graficoChart {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.5s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
 }
 
 .spinner {
   width: 70px;
   height: 70px;
-  border: 8px solid rgba(255, 255, 255, 0.3);
-  border-top: 8px solid #14d8dc;
+  border: 8px solid #14d8dc;
+  border-top: 8px solid transparent;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
-}
-
-/* ========== ANIMACIONES ========== */
-@keyframes fade-in-tab {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+
+
 /* ========== RESPONSIVE: MÓVILES ========== */
 @media (max-width: 600px) {
   body {
     padding: 20px 10px !important;
   }
-  
+
   .container {
-    padding: 20px !important;
-    margin: 20px auto !important;
+    padding: 40px 20px !important;
+    font-size: 42px !important;
   }
 
   h1 {
-    font-size: 28px !important;
+    font-size: 35px !important;
   }
 
   .campo {
     flex-direction: column !important;
     gap: 8px !important;
   }
-  
+
   .campo label {
     font-size: 15px !important;
     margin-bottom: 5px !important;
-    flex-basis: auto;
   }
-  
+
   .campo input,
   .campo select {
-    font-size: 16px !important;
+    font-size: 20px !important;
     padding: 12px !important;
     border-radius: 10px !important;
   }
-  
+
+  /* ========== BOTÓN MÓVIL ========== */
   button {
-    padding: 12px 20px !important;
-    font-size: 18px !important;
-    border-radius: 10px !important;
+    padding: 14px 25px !important;
+    font-size: 28px !important;
+    border-radius: 12px !important;
+    width: 100% !important;
   }
 
   .tabs {
     flex-direction: column !important;
     gap: 10px !important;
+    margin: auto;
   }
 
   .tab-btn {
-    font-size: 16px !important;
-    padding: 10px 20px !important;
-    width: 100%;
-    margin: 0;
+    font-size: 24px !important;
+    padding: 0px 80px !important;
+    margin: 0px;
   }
 
   .tab-content {
     text-align: center !important;
-    font-size: 14px;
-    padding: 15px;
-  }
-
-  #tabla-historial {
-    font-size: 12px;
+    font-size: 15px;
   }
 
   #resultado_ejercicio {
-    font-size: 16px !important;
-    padding: 10px !important;
+    font-size: 18px !important;
+    padding: 12px !important;
   }
 
-  #graficoChart-container {
-    height: 300px;
-  }
+  #graficoChart {
+  aspect-ratio: 4 / 3;
+  height: auto !important;
+}
+
+
 }
