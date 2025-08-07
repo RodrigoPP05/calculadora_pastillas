@@ -132,11 +132,16 @@ button:hover {
 }
 
 /* ========== PLOT & TABLA ========== */
-#plotly-graph {
-  width: 100%;
-  min-height: 400px;
-  margin-top: 20px;
+#graficoChart {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9;
+  max-height: 500px;
 }
+
+
+
+
 
 #tabla-historial {
   width: 100%;
@@ -226,19 +231,13 @@ button:hover {
     padding: 12px !important;
   }
 
-   #plotly-graph .main-svg {
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  #plotly-graph {
-    overflow-x: auto !important;
-    max-width: 100% !important;
-    box-sizing: border-box;
-  }
-
+  #graficoChart {
+  aspect-ratio: 4 / 3;
+  height: auto !important;
 }
 
+
+}
 
 
 
