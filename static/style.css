@@ -227,8 +227,13 @@ button:hover {
   }
 
   #plotly-graph {
-    min-height: 300px !important;
-  }
+  width: 100% !important;
+  height: auto !important;
+  min-height: 300px;
+  margin-top: 20px;
 }
+
+}
+
 
 
