@@ -316,115 +316,118 @@
   </script>
 
   <!-- Guardar en sessionStorage si hay resultado -->
-  {% if resultado %}
-  <script>
-    const nuevo = {
-      d: "{{ request.form['diametro'] }} {{ request.form['udiam'] }}",
-      l: "{{ request.form['lado'] }} {{ request.form['ulado'] }}",
-      dens: "{{ request.form['densidad'] }}",
-      rend: "{{ resultado.rendimiento }}",
-      cost: "{{ resultado.costo }}"
-    };
+    {% if resultado %}
+  <script>
+    const nuevo = {
+      d: "{{ request.form['diametro'] }} {{ request.form['udiam'] }}",
+      l: "{{ request.form['lado'] }} {{ request.form['ulado'] }}",
+      dens: "{{ request.form['densidad'] }}",
+      rend: "{{ resultado.rendimiento }}",
+      cost: "{{ resultado.costo }}"
+    };
 
-    let historial = JSON.parse(sessionStorage.getItem('historial')) || [];
+    let historial = JSON.parse(sessionStorage.getItem('historial')) || [];
 
-    if (!historial.some(h =>
-      h.d === nuevo.d &&
-      h.l === nuevo.l &&
-      h.dens === nuevo.dens &&
-      h.rend === nuevo.rend &&
-      h.cost === nuevo.cost
-    )) {
-      historial.push(nuevo);
-      sessionStorage.setItem('historial', JSON.stringify(historial));
-    }
-  </script>
-  {% endif %}
-  <script>
+    if (!historial.some(h =>
+      h.d === nuevo.d &&
+      h.l === nuevo.l &&
+      h.dens === nuevo.dens &&
+      h.rend === nuevo.rend &&
+      h.cost === nuevo.cost
+    )) {
+      historial.push(nuevo);
+      sessionStorage.setItem('historial', JSON.stringify(historial));
+    }
+  </script>
+  {% endif %}
+  <script>
 function mostrarOpcionesEjercicio() {
-  const tipo = document.getElementById('tipo_calculo').value;
-  const form = document.getElementById('formulario_ejercicio');
-  const res = document.getElementById('resultado_ejercicio');
-  res.innerHTML = "";
-  if (tipo === "pastilla") {
-    form.innerHTML = `
-      <div class="campo"><label>Costo oblea ($):</label><input id="oblea_cost"></div>
-      <div class="campo"><label>Pastillas:</label><input id="num_pastillas"></div>
-      <div class="campo"><label>Rendimiento (%):</label><input id="rendimiento"></div>
-      <button onclick="calcularPastilla()">Calcular</button>`;
-  } else if (tipo === "oblea_para_precio") {
-    form.innerHTML = `
-      <div class="campo"><label>Precio objetivo ($):</label><input id="precio_objetivo"></div>
-      <div class="campo"><label>Pastillas:</label><input id="num_pastillas"></div>
-      <div class="campo"><label>Rendimiento (%):</label><input id="rendimiento"></div>
-      <button onclick="calcularObleaDesdePrecio()">Calcular</button>`;
-  } else if (tipo === "ic") {
-    form.innerHTML = `
-      <div class="campo"><label>Pastilla ($):</label><input id="pastilla"></div>
-      <div class="campo"><label>Prueba ($):</label><input id="prueba"></div>
-      <div class="campo"><label>Empaque ($):</label><input id="empaque"></div>
-      <div class="campo"><label>Rendimiento final (%):</label><input id="rend_final"></div>
-      <button onclick="calcularIC()">Calcular</button>`;
-  } else if (tipo === "comparacion") {
-    form.innerHTML = `
-      <div class="campo"><label>Precio original ($):</label><input id="original"></div>
-      <div class="campo"><label>Precio nuevo ($):</label><input id="nuevo"></div>
-      <div class="campo"><label>Prueba ($):</label><input id="prueba"></div>
-      <div class="campo"><label>Empaque ($):</label><input id="empaque"></div>
-      <div class="campo"><label>Rendimiento final (%):</label><input id="rend_final"></div>
-      <button onclick="compararCostos()">Calcular</button>`;
-  } else {
-    form.innerHTML = "";
-  }
+  const tipo = document.getElementById('tipo_calculo').value;
+  const form = document.getElementById('formulario_ejercicio');
+  const res = document.getElementById('resultado_ejercicio');
+  res.innerHTML = "";
+  if (tipo === "pastilla") {
+    form.innerHTML = `
+      <div class="campo"><label>Costo oblea ($):</label><input id="oblea_cost"></div>
+      <div class="campo"><label>Pastillas:</label><input id="num_pastillas"></div>
+      <div class="campo"><label>Rendimiento (%):</label><input id="rendimiento"></div>
+      <button onclick="calcularPastilla()">Calcular</button>`;
+  } else if (tipo === "oblea_para_precio") {
+    form.innerHTML = `
+      <div class="campo"><label>Precio objetivo ($):</label><input id="precio_objetivo"></div>
+      <div class="campo"><label>Pastillas:</label><input id="num_pastillas"></div>
+      <div class="campo"><label>Rendimiento (%):</label><input id="rendimiento"></div>
+      <button onclick="calcularObleaDesdePrecio()">Calcular</button>`;
+  } else if (tipo === "ic") {
+    form.innerHTML = `
+      <div class="campo"><label>Pastilla ($):</label><input id="pastilla"></div>
+      <div class="campo"><label>Prueba ($):</label><input id="prueba"></div>
+      <div class="campo"><label>Empaque ($):</label><input id="empaque"></div>
+      <div class="campo"><label>Rendimiento final (%):</label><input id="rend_final"></div>
+      <button onclick="calcularIC()">Calcular</button>`;
+  } else if (tipo === "comparacion") {
+    form.innerHTML = `
+      <div class="campo"><label>Precio original ($):</label><input id="original"></div>
+      <div class="campo"><label>Precio nuevo ($):</label><input id="nuevo"></div>
+      <div class="campo"><label>Prueba ($):</label><input id="prueba"></div>
+      <div class="campo"><label>Empaque ($):</label><input id="empaque"></div>
+      <div class="campo"><label>Rendimiento final (%):</label><input id="rend_final"></div>
+      <button onclick="compararCostos()">Calcular</button>`;
+  } else {
+    form.innerHTML = "";
+  }
 }
 
 function calcularPastilla() {
-  const c = parseFloat(document.getElementById('oblea_cost').value);
-  const n = parseFloat(document.getElementById('num_pastillas').value);
-  const y = parseFloat(document.getElementById('rendimiento').value) / 100;
-  document.getElementById('resultado_ejercicio').innerHTML = `<p>🔹 Costo por pastilla: $${(c / (n * y)).toFixed(2)}</p>`;
+  const c = parseFloat(document.getElementById('oblea_cost').value);
+  const n = parseFloat(document.getElementById('num_pastillas').value);
+  const y = parseFloat(document.getElementById('rendimiento').value) / 100;
+  document.getElementById('resultado_ejercicio').innerHTML = `<p>🔹 Costo por pastilla: $${(c / (n * y)).toFixed(2)}</p>`;
 }
 
 function calcularObleaDesdePrecio() {
-  const p = parseFloat(document.getElementById('precio_objetivo').value);
-  const n = parseFloat(document.getElementById('num_pastillas').value);
-  const y = parseFloat(document.getElementById('rendimiento').value) / 100;
-  document.getElementById('resultado_ejercicio').innerHTML = `<p>🔹 Costo necesario de oblea: $${(p * n * y).toFixed(2)}</p>`;
+  const p = parseFloat(document.getElementById('precio_objetivo').value);
+  const n = parseFloat(document.getElementById('num_pastillas').value);
+  const y = parseFloat(document.getElementById('rendimiento').value) / 100;
+  document.getElementById('resultado_ejercicio').innerHTML = `<p>🔹 Costo necesario de oblea: $${(p * n * y).toFixed(2)}</p>`;
 }
 
 function calcularIC() {
-  const d = parseFloat(document.getElementById('pastilla').value);
-  const t = parseFloat(document.getElementById('prueba').value);
-  const p = parseFloat(document.getElementById('empaque').value);
-  const y = parseFloat(document.getElementById('rend_final').value) / 100;
-  document.getElementById('resultado_ejercicio').innerHTML = `<p>🔹 Costo del IC: $${((d + t + p) / y).toFixed(2)}</p>`;
+  const d = parseFloat(document.getElementById('pastilla').value);
+  const t = parseFloat(document.getElementById('prueba').value);
+  const p = parseFloat(document.getElementById('empaque').value);
+  const y = parseFloat(document.getElementById('rend_final').value) / 100;
+  document.getElementById('resultado_ejercicio').innerHTML = `<p>🔹 Costo del IC: $${((d + t + p) / y).toFixed(2)}</p>`;
 }
 
 function compararCostos() {
-  const d1 = parseFloat(document.getElementById('original').value);
-  const d2 = parseFloat(document.getElementById('nuevo').value);
-  const t = parseFloat(document.getElementById('prueba').value);
-  const p = parseFloat(document.getElementById('empaque').value);
-  const y = parseFloat(document.getElementById('rend_final').value) / 100;
-  const c1 = (d1 + t + p) / y;
-  const c2 = (d2 + t + p) / y;
-  const factor = c2 / c1;
-  document.getElementById('resultado_ejercicio').innerHTML = `
-    <p>🔹 Costo anterior del IC: $${c1.toFixed(2)}</p>
-    <p>🔹 Costo nuevo del IC: $${c2.toFixed(2)}</p>
-    <p>🔹 Incremento: ${factor.toFixed(2)} veces</p>`;
+  const d1 = parseFloat(document.getElementById('original').value);
+  const d2 = parseFloat(document.getElementById('nuevo').value);
+  const t = parseFloat(document.getElementById('prueba').value);
+  const p = parseFloat(document.getElementById('empaque').value);
+  const y = parseFloat(document.getElementById('rend_final').value) / 100;
+  const c1 = (d1 + t + p) / y;
+  const c2 = (d2 + t + p) / y;
+  const factor = c2 / c1;
+  document.getElementById('resultado_ejercicio').innerHTML = `
+    <p>🔹 Costo anterior del IC: $${c1.toFixed(2)}</p>
+    <p>🔹 Costo nuevo del IC: $${c2.toFixed(2)}</p>
+    <p>🔹 Incremento: ${factor.toFixed(2)} veces</p>`;
 }
 </script>
 
 <script>
-  window.addEventListener('load', () => {
-    const splash = document.getElementById('custom-splash');
-    if (splash) splash.style.display = 'none';
-  });
+window.addEventListener('DOMContentLoaded', () => {
+  const splash = document.getElementById('custom-splash');
+  if (splash) {
+    // Use a timeout to ensure the animation has time to be seen
+    setTimeout(() => {
+      splash.style.opacity = '0';
+      splash.addEventListener('transitionend', () => splash.style.display = 'none');
+    }, 1500); // 1.5 seconds is a good starting point
+  }
+});
 </script>
-
-
-
 
 </body>
 </html>
