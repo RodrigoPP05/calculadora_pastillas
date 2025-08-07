@@ -64,7 +64,7 @@ def ejercicio():
     # En caso de que el tipo de ejercicio no sea válido
     return {"error": "Tipo de ejercicio no válido"}, 400
 
-# Ruta principal del sitio, acepta GET y POST
+# Ruta principal
 @app.route("/", methods=["GET", "POST"])
 def index():
     resultado = {}    # Diccionario para guardar los resultados numéricos
@@ -145,7 +145,10 @@ def index():
         }
 
     # Renderiza el template 'index.html' con los resultados y datos de la gráfica
-    return render_template("index.html", resultado=resultado, plot_data=json.dumps(plot_data))
+    return render_template("index.html", resultado=resultado, plot_data=plot_data, tiene_plot=bool(plot_data))
+
+
+
 
 # Punto de entrada principal de la app
 if __name__ == "__main__":
