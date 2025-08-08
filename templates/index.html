@@ -406,6 +406,27 @@
     }
     {% endif %}
 
-    // Splash screen
-    window.addEventListener('DOMContentLoaded', () => {
-      const splash = document.get
+    <script>
+  // Ocultar splash cuando la página esté completamente cargada
+  window.onload = () => {
+    const splash = document.getElementById('custom-splash');
+    if (splash) {
+      splash.style.opacity = '0';
+      splash.addEventListener('transitionend', () => {
+        splash.style.display = 'none';
+      });
+    }
+
+    // También carga funciones JS si existen
+    if (typeof mostrarCamposExtras === "function") mostrarCamposExtras();
+    if (typeof mostrarHistorial === "function") mostrarHistorial();
+  };
+
+  // Plan B: fuerza ocultar el splash si algo salió mal después de 4 segundos
+  setTimeout(() => {
+    const splash = document.getElementById('custom-splash');
+    if (splash) splash.style.display = 'none';
+  }, 4000);
+</script>
+
+
