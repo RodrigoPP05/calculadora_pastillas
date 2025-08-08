@@ -139,10 +139,6 @@ button:hover {
   max-height: 500px;
 }
 
-
-
-
-
 #tabla-historial {
   width: 100%;
   border-collapse: collapse;
@@ -168,6 +164,11 @@ button:hover {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 #custom-splash {
   position: fixed;
   top: 0;
@@ -182,6 +183,8 @@ button:hover {
   justify-content: center;
   align-items: center;
   animation: fadeIn 1s ease-in-out;
+  transition: opacity 0.8s ease;
+  opacity: 1; /* Para poder animar el fade-out desde JS */
 }
 
 .spinner {
@@ -193,18 +196,6 @@ button:hover {
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
 }
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-
-
 
 /* ========== RESPONSIVE: MÓVILES ========== */
 @media (max-width: 600px) {
@@ -269,9 +260,7 @@ button:hover {
   }
 
   #graficoChart {
-  aspect-ratio: 4 / 3;
-  height: auto !important;
-}
-
-
+    aspect-ratio: 4 / 3;
+    height: auto !important;
+  }
 }
